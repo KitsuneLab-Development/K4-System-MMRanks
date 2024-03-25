@@ -7,6 +7,9 @@
 ![GitHub all releases](https://img.shields.io/github/downloads/K4ryuu/K4-System-MMRanks/total?style=for-the-badge)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/K4ryuu/K4-System-MMRanks/dev?style=for-the-badge)
 
+> [!CAUTION]
+> This plugin does not adhere to Steam guidelines. Therefore, I do not recommend using it on your server, as it may risk being token banned if Steam decides to enforce such measures again.
+
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
