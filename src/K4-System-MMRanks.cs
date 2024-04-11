@@ -18,12 +18,12 @@ namespace K4SystemMMRanks
 		public override int Version { get; set; } = 1;
 	}
 
-	[MinimumApiVersion(198)]
+	[MinimumApiVersion(200)]
 	public sealed partial class PluginK4SystemMMRanks : BasePlugin, IPluginConfig<PluginConfig>
 	{
 
 		public override string ModuleName => "K4-System Matchmaking Ranks";
-		public override string ModuleVersion => "1.0.0";
+		public override string ModuleVersion => "1.0.1";
 		public override string ModuleAuthor => "K4ryuu";
 
 		public required PluginConfig Config { get; set; } = new PluginConfig();
@@ -38,7 +38,7 @@ namespace K4SystemMMRanks
 			this.Config = config;
 		}
 
-		public static PlayerCapability<IK4SharedApi> Capability_SharedAPI { get; } = new("k4-system:sharedapi");
+		public static PlayerCapability<IPlayerAPI> Capability_SharedAPI { get; } = new("k4-system:sharedapi");
 
 		public override void Load(bool hotReload)
 		{
@@ -51,13 +51,13 @@ namespace K4SystemMMRanks
 					.ToList()
 					.ForEach(p =>
 					{
-						IK4SharedApi? apiHandler = Capability_SharedAPI.Get(p);
+						IPlayerAPI? apiHandler = Capability_SharedAPI.Get(p);
 
 						if (apiHandler == null)
 							return;
 
-						int rankId = apiHandler.PlayerRankID;
-						int points = apiHandler.PlayerPoints;
+						int rankId = apiHandler.RankID;
+						int points = apiHandler.Points;
 
 						p.CompetitiveRankType = (sbyte)(Config.Mode == 1 ? 11 : 12);
 						p.CompetitiveRanking = Config.Mode == 1 ? points : rankId >= 19 ? 18 : rankId;
