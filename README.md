@@ -10,6 +10,9 @@
 > [!CAUTION]
 > This plugin does not adhere to Steam guidelines. Therefore, I do not recommend using it on your server, as it may risk being token banned if Steam decides to enforce such measures again.
 
+> [!ALERT]
+> In order to reveal everyone's rank on scoreboard install this great metamod plugin from my friend @Cruze03 https://github.com/Cruze03/FakeRanks-RevealAll/releases/latest
+
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
