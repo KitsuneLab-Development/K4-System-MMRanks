@@ -38,7 +38,7 @@ namespace K4SystemMMRanks
 			this.Config = config;
 		}
 
-		public static PlayerCapability<IPlayerAPI> Capability_SharedAPI { get; } = new("k4-system:sharedapi");
+		public static PlayerCapability<IPlayerAPI> Capability_SharedAPI { get; } = new("k4-system:sharedapi-player");
 
 		public override void Load(bool hotReload)
 		{
@@ -54,6 +54,9 @@ namespace K4SystemMMRanks
 						IPlayerAPI? apiHandler = Capability_SharedAPI.Get(p);
 
 						if (apiHandler == null)
+							return;
+
+						if (!apiHandler.IsLoaded || !apiHandler.IsValid || !apiHandler.IsPlayer)
 							return;
 
 						int rankId = apiHandler.RankID;
