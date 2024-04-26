@@ -1,4 +1,4 @@
-﻿using CounterStrikeSharp.API;
+using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Core.Attributes;
 using System.Text.Json.Serialization;
@@ -23,7 +23,7 @@ namespace K4SystemMMRanks
 	{
 
 		public override string ModuleName => "K4-System Matchmaking Ranks";
-		public override string ModuleVersion => "1.0.1";
+		public override string ModuleVersion => "1.0.3";
 		public override string ModuleAuthor => "K4ryuu";
 
 		public required PluginConfig Config { get; set; } = new PluginConfig();
@@ -42,32 +42,32 @@ namespace K4SystemMMRanks
 
 		public override void Load(bool hotReload)
 		{
-			VirtualFunctions.CCSPlayerPawnBase_PostThinkFunc.Hook(_ =>
-			{
+			RegisterListener<Listeners.OnTick>(() =>
+        	{
 				if (Config.Mode == 0)
-					return HookResult.Continue;
+					return;
 
 				Utilities.GetPlayers().Where(p => p?.IsValid == true && p.PlayerPawn?.IsValid == true && !p.IsBot && !p.IsHLTV && p.SteamID.ToString().Length == 17)
-					.ToList()
-					.ForEach(p =>
-					{
-						IPlayerAPI? apiHandler = Capability_SharedAPI.Get(p);
+				.ToList()
+				.ForEach(p =>
+				{
+					IPlayerAPI? apiHandler = Capability_SharedAPI.Get(p);
 
-						if (apiHandler == null)
-							return;
+					if (apiHandler == null)
+						return;
 
-						if (!apiHandler.IsLoaded || !apiHandler.IsValid || !apiHandler.IsPlayer)
-							return;
+					if (!apiHandler.IsLoaded || !apiHandler.IsValid || !apiHandler.IsPlayer)
+						return;
 
-						int rankId = apiHandler.RankID;
-						int points = apiHandler.Points;
+					int rankId = apiHandler.RankID;
+					int points = apiHandler.Points;
 
-						p.CompetitiveRankType = (sbyte)(Config.Mode == 1 ? 11 : 12);
-						p.CompetitiveRanking = Config.Mode == 1 ? points : rankId >= 19 ? 18 : rankId;
-					});
-
-				return HookResult.Continue;
-			}, HookMode.Post);
+					p.CompetitiveWins = 10;
+					p.CompetitiveRankType = (sbyte)(Config.Mode == 1 ? 11 : 12);
+					p.CompetitiveRanking = Config.Mode == 1 ? points : rankId >= 19 ? 18 : rankId;
+					Utilities.SetStateChanged(p, "CCSPlayerController", "m_iCompetitiveRankType");
+				});
+			});
 		}
 	}
 }
