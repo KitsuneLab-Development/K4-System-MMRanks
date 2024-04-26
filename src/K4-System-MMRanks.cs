@@ -23,7 +23,7 @@ namespace K4SystemMMRanks
 	{
 
 		public override string ModuleName => "K4-System Matchmaking Ranks";
-		public override string ModuleVersion => "1.0.2";
+		public override string ModuleVersion => "1.0.3";
 		public override string ModuleAuthor => "K4ryuu";
 
 		public required PluginConfig Config { get; set; } = new PluginConfig();
@@ -62,8 +62,10 @@ namespace K4SystemMMRanks
 					int rankId = apiHandler.RankID;
 					int points = apiHandler.Points;
 
+					p.CompetitiveWins = 10;
 					p.CompetitiveRankType = (sbyte)(Config.Mode == 1 ? 11 : 12);
 					p.CompetitiveRanking = Config.Mode == 1 ? points : rankId >= 19 ? 18 : rankId;
+					Utilities.SetStateChanged(p, "CCSPlayerController", "m_iCompetitiveRankType");
 				});
 			});
 		}
