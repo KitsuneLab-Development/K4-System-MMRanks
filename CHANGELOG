@@ -1,3 +1,9 @@
+-- 2024. 05. 13 - v1.0.4
+
+- feat: Block rank updates between win panel and next map warmup start
+- upgrade: Rank update logic upgraded for better performance
+- upgrade: Remove unnecessary validations
+
 -- 2024. 04. 11 - v1.0.1
 
 - upgrade: Upgrade API to use latest K4-System
