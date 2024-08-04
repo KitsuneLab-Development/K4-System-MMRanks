@@ -13,8 +13,17 @@ namespace K4SystemMMRanks
 		[JsonPropertyName("mode")]
 		public int Mode { get; set; } = 1;
 
+		[JsonPropertyName("RankBase")]
+		public int RankBase { get; set; } = 0;
+
+		[JsonPropertyName("RankMax")]
+		public int RankMax { get; set; } = 0;
+		
+		[JsonPropertyName("RankMargin")]
+		public int RankMargin { get; set; } = 0;
+
 		[JsonPropertyName("ConfigVersion")]
-		public override int Version { get; set; } = 1;
+		public override int Version { get; set; } = 2;
 	}
 
 	[MinimumApiVersion(227)]
@@ -22,11 +31,11 @@ namespace K4SystemMMRanks
 	{
 
 		public override string ModuleName => "K4-System Matchmaking Ranks";
-		public override string ModuleVersion => "1.0.4";
+		public override string ModuleVersion => "1.0.5";
 		public override string ModuleAuthor => "K4ryuu";
 
 		public bool AllowUpdate = false;
-
+		
 		public required PluginConfig Config { get; set; } = new PluginConfig();
 
 		public void OnConfigParsed(PluginConfig config)
@@ -46,21 +55,63 @@ namespace K4SystemMMRanks
 
 			RegisterEventHandler((EventRoundStart @event, GameEventInfo info) => { AllowUpdate = true; return HookResult.Continue; });
 			RegisterEventHandler((EventCsWinPanelMatch @event, GameEventInfo info) => { AllowUpdate = false; return HookResult.Continue; });
-
+			
 			RegisterListener<Listeners.OnTick>(() =>
-			{
-				if (Config.Mode == 0 || !AllowUpdate)
+        	{
+				if (!AllowUpdate || (Config.Mode <= 0 || Config.Mode > 4) && (Config.RankBase == 0 || Config.RankMax == 0))
 					return;
 
 				Utilities.GetPlayers().ForEach(p =>
 				{
 					IPlayerAPI? h = Capability_SharedAPI.Get(p);
+
 					if (h?.IsLoaded == true && h.IsValid && h.IsPlayer)
 					{
 						int rankId = h.RankID;
+						int points = h.Points;
+
 						p.CompetitiveWins = 10;
-						p.CompetitiveRankType = (sbyte)(Config.Mode == 1 ? 11 : 12);
-						p.CompetitiveRanking = Config.Mode == 1 ? h.Points : rankId >= 19 ? 18 : rankId;
+						switch(Config.Mode)
+						{
+							// Premier
+							case 1:
+							{
+								p.CompetitiveRankType = 11;
+								p.CompetitiveRanking = points;
+								break;
+							}
+							// Competitive
+							case 2:
+							{
+								p.CompetitiveRankType = 12;
+								p.CompetitiveRanking = rankId >= 19 ? 18 : rankId-1;
+								break;
+							}
+							// Wingman
+							case 3:
+							{
+								p.CompetitiveRankType = 7;
+								p.CompetitiveRanking = rankId >= 19 ? 18 : rankId-1;
+								break;
+							}
+							// Danger Zone (!! DOES NOT WORK !!)
+							case 4:
+							{
+								p.CompetitiveRankType = 10;
+								p.CompetitiveRanking = rankId >= 16 ? 15 : rankId-1;
+								break;
+							}
+							// Custom Rank
+							default:
+							{
+								int rank = rankId > Config.RankMax ? Config.RankBase+Config.RankMax-Config.RankMargin : Config.RankBase+(rankId-Config.RankMargin-1);
+								
+								p.CompetitiveRankType = 12;
+								
+								p.CompetitiveRanking = rank;
+								break;
+							}
+						}
 						Utilities.SetStateChanged(p, "CCSPlayerController", "m_iCompetitiveRankType");
 					}
 				});
