@@ -58,7 +58,7 @@ namespace K4SystemMMRanks
 			
 			RegisterListener<Listeners.OnTick>(() =>
         	{
-				if (!AllowUpdate || (Config.Mode <= 0 || Config.Mode > 4) && (Config.RankBase == 0 || Config.RankMax == 0))
+				if (!AllowUpdate || Config.Mode <= 0 || (Config.Mode > 4 && (Config.RankBase == 0 || Config.RankMax == 0)))
 					return;
 
 				Utilities.GetPlayers().ForEach(p =>
