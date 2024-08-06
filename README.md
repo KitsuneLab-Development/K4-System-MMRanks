@@ -48,7 +48,15 @@ To use this server addon, you'll need the following dependencies installed:
 
 - 0 - Disabled
 - 1 - Prime Points
-- 2 - Rank Images
+- 2 - MM Rank Images
+- 3 - Wingman Rank Images
+- 4 - DangerZone Rank Images **[Does not work right now]**
+- 5 - [Custom Rank Images](https://github.com/KitsuneLab-Development/K4-System-MMRanks/edit/dev/README.md#custom-ranks)
+
+### Custom Ranks
+- Upload files in your addon with the path: `panorama/images/icons/skillgroups/`
+- Images should be in SVG file format and should have `skillgroup` prefix. For eg. `skillgroup19000051.svg` (When you compile addon, it should automatically convert file to VSVG)
+- Make sure to edit `RankBase` and `RankMax` in the config file. If your custom ranks start with `19000051` and if you have 20 ranks, then `RankBase` will be `19000051` and `RankMax` will be `20`.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -63,7 +71,7 @@ To use this server addon, you'll need the following dependencies installed:
 ## Authors
 
 - [**K4ryuu**](https://github.com/K4ryuu) - *Initial work*
-- [**K4ryuu**](https://github.com/Cruze03) - *Metamod part of the plugin*
+- [**Cruze**](https://github.com/Cruze03) - *Metamod part of the plugin*
 
 See also the list of [contributors](https://github.com/KitsuneLab-Development/K4-System-MMRanks/graphs/contributors) who participated in this project as an outside contributor.
 
