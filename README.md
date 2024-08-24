@@ -51,7 +51,7 @@ To use this server addon, you'll need the following dependencies installed:
 - 2 - MM Rank Images
 - 3 - Wingman Rank Images
 - 4 - DangerZone Rank Images **[Does not work right now]**
-- 5 - [Custom Rank Images](https://github.com/KitsuneLab-Development/K4-System-MMRanks/edit/dev/README.md#custom-ranks)
+- 5 - [Custom Rank Images](https://github.com/KitsuneLab-Development/K4-System-MMRanks?tab=readme-ov-file#custom-ranks)
 
 ### Custom Ranks
 - Upload files in your addon with the path: `panorama/images/icons/skillgroups/`
